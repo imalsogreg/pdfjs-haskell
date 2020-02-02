@@ -27,10 +27,14 @@ import           Reflex.Dom.Core
 import           Language.Javascript.JSaddle.WebSockets
 #endif
 
+
 newtype PageNumber = PageNumber { getPageNumber :: Int }
   deriving( Eq, Generic, Show )
 
 
+-- | A viewer is defined by the Reflex action for creating
+-- a rendering canvas, and an Event of requests for page
+-- numbers to render
 data PDFViewConfig t m = PDFViewConfig
   { makeCanvasElement :: m (El t)
   , render            :: Event t (Maybe PageNumber)
@@ -77,19 +81,6 @@ run =
                              "style" =: "box-shadow:5px 5px 5px black;") (return ())
   performEvent $ ffor b
     (\() -> liftJSM $ do
-        -- eval @String "console.log(pdfjsLib)"
-        -- libObj <- jsg @String "pdfjsLib"
-        -- val @String "console" ^. js1 @String "log" (1 :: Int)
-        -- eval =<< (IO.liftIO $ readFile"./lib/myfunc.js")
-        -- eval @String "var test = { f: function(x) {console.log(x+10);}  }"
-        -- eval @String "var a = test.f(212);"
-        -- jsg (Text.pack "console") ^. js1 (Text.pack "log") ("Logging test" :: String)
-
-        -- r <- jsg (Text.pack "test2") ^. js1 (Text.pack "g") (toJSVal (323 :: Int))
-        -- jsg (Text.pack "console") ^. js1 (Text.pack "log") r
-        -- s <- getSomething
-        -- IO.liftIO $ print s
-        -- jsg "test" ^. js1 "f" (toJSVal "212")
         renderPage examplePdf 2
         return ()
     )
@@ -103,23 +94,8 @@ run =
       -- scriptInline s = elAttr "script" ("type" =: "text/javascript") (text s)
 
 examplePdf :: Text.Text
-examplePdf = -- ("data:application/pdf;base64,"<>) $ Text.decodeUtf8 $(embedFile "/home/greghale/Documents/dummy_64.pdf")
+examplePdf =
   Text.decodeUtf8 $(embedFile "/home/greghale/Documents/astro_64.pdf")
-
--- s1 :: Text.Text
--- s1 = "var test2 = { g: function(x) {return (x+1000);} }"
-
-renderPage' :: Text.Text -> Int -> JSM ()
-renderPage' pdfBytes pageNum = do
-  let log logArg = jsg @String "console" ^. js1 @String "log" logArg
-  log (1 :: Int)
-  b <- jsg @String "window" ^. js1 @String "atob" pdfBytes
-  log b
- -- eval @String "console.log(100)"
-  IO.liftIO $ print (Text.take 100 examplePdf)
-  -- jsg @String "pdfjsLib" ^. js1 @String "getDocument" examplePdf
-
-  return ()
 
 
 renderPage :: Text.Text -> Int -> JSM ()
