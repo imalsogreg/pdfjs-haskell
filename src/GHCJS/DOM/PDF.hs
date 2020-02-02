@@ -71,7 +71,7 @@ data PDFView t = PDFView
   , renderStatus :: Dynamic t RenderStatus
   }
 
-
+run :: JSM ()
 run =
   mainWidgetWithHead widgetHead $ do
   b <- button (Text.pack "Click")
