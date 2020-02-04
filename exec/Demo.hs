@@ -76,7 +76,7 @@ app = do
                              "style" =: "box-shadow:5px 5px 5px black;") (return ())
   res <- performEvent $ ffor (tagPromptlyDyn loadedFile b) $ \case
     Nothing  -> return "Error"
-    Just pdf -> liftJSM $ PDF.renderPage pdf 2 >> return "Good"
+    Just pdf -> liftJSM $ PDF.renderPage pdf 1 >> return "Good"
 
   display =<< holdDyn "Waiting for response" res
   return ()
