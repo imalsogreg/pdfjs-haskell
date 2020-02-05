@@ -1,0 +1,3 @@
+language: nix
+script:
+  nix build -f default.nix ghcjs.pdfjs --arg build_demo true
