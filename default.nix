@@ -13,8 +13,14 @@
         setFlags = p: if   build_demo
                       then pkgs.haskell.lib.appendConfigureFlag p "-f Demo"
                       else p;
+        fixSrc   = p: p.overrideAttrs (oldAttrs:  {
+          src = builtins.filterSource (
+            path: type: baseNameOf path != "integration-tests" &&
+                        baseNameOf path != "result"
+          ) ./.;
+                   });
       in
-        setFlags (pkgs.haskell.lib.addBuildDepends super.pdfjs extraDeps);
+        fixSrc (setFlags (pkgs.haskell.lib.addBuildDepends super.pdfjs extraDeps));
   };
 
   shells = {
