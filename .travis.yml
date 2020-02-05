@@ -1,3 +1,15 @@
 language: nix
+nix: 2.1.1
+sudo: require
+
+install:
+  - sudo cp -rT $TRAVIS_BUILD_DIR/nix /etc/nix
+
+before_script:
+  - git config --global user.email "travis-ci@example.com"
+  - git config --global user.name  "Travis-CI"
+
 script:
-  nix build -f default.nix ghcjs.pdfjs --arg build_demo true
+  - nix-env -iA cachix -f https://cachix.org/api/v1/install
+  - cachix use imalsogreg
+  - nix build -f default.nix ghcjs.pdfjs --arg build_demo true
