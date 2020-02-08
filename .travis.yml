@@ -14,4 +14,4 @@ script:
   - cachix use imalsogreg
   - nix build -f default.nix ghcjs.pdfjs --arg build_demo true
   - cd integration-tests
-  - nix-shell --run "source run-tests.sh"
+  - NIXPKGS_ALLOW_UNFREE=1 nix-shell --run "source run-tests.sh"
