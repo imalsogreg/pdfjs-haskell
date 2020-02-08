@@ -13,3 +13,4 @@ script:
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - cachix use imalsogreg
   - nix build -f default.nix ghcjs.pdfjs --arg build_demo true
+  - cd integration-tests && nix-shell --run "source run-tests.sh"
