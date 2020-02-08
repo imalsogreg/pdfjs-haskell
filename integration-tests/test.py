@@ -15,9 +15,9 @@ def browser_render_result(browser,pdfPath):
     file_btn   = browser.find_element_by_id('choose-file')
     canvas     = browser.find_element_by_id('the-canvas')
     file_btn.send_keys(pdfPath)
-    time.sleep(0.5)
+    time.sleep(2)
     render_btn.click()
-    time.sleep(0.5)
+    time.sleep(2)
     screenBytes = canvas.screenshot_as_base64
     with io.open('./screenshot.html','w') as f:
         page = imgBase64ToWebpage(screenBytes)
@@ -42,6 +42,7 @@ class Test(unittest.TestCase):
         pdfPath = sys.argv[2]
         expectedCanvasBytes = io.open('expected_canvas_bytes.txt').read()[:-1]
         self.ff.get('http://localhost:8000')
+        time.sleep(1)
         self.assertEqual(browser_render_result(self.ff,pdfPath)[0:10000], expectedCanvasBytes[0:10000])
    
 
