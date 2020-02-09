@@ -3,6 +3,7 @@
 , python3
 , geckodriver
 , firefox-devedition-bin
+, procps
 }:
 
 let pyEnv = python3.withPackages (ps: [ps.selenium]);
@@ -14,6 +15,7 @@ runCommand "runTests.sh"
     src = ./.;
     inherit pdfjs;
     firefox = firefox-devedition-bin;
+    inherit procps;
   } ''
 echo TODO
 ''
