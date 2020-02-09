@@ -1,6 +1,8 @@
 pdfjs-haskell
 ===
 
+[![Build Status](https://travis-ci.org/imalsogreg/pdfjs-haskell.svg?branch=master)](https://travis-ci.org/imalsogreg/pdfjs-haskell)
+
 jsaddle/ghcjs wrapper around [pdf.js](https://github.com/mozilla/pdf.js)
 
 Uploaded to github for personal use. Not ready for public consumption.
