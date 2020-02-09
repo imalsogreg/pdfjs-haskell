@@ -41,12 +41,12 @@ app
   , MonadJSM (Performable m)
   ) => m ()
 app = do
-  b <- fmap (domEvent Click . fst) $ el' "button" $ text (Text.pack "Click")
+  b <- fmap (domEvent Click . fst) $ elAttr' "button" ("id" =: "render") $ text (Text.pack "Render")
 
   f <- inputElement $ InputElementConfig
     { _inputElementConfig_elementConfig = ElementConfig
       { _elementConfig_namespace = Nothing
-      , _elementConfig_initialAttributes = "type" =: "file"
+      , _elementConfig_initialAttributes = "type" =: "file" <> "id" =: "choose-file"
       , _elementConfig_modifyAttributes = Nothing
       , _elementConfig_eventSpec = def
       }
@@ -76,7 +76,7 @@ app = do
                              "style" =: "box-shadow:5px 5px 5px black;") (return ())
   res <- performEvent $ ffor (tagPromptlyDyn loadedFile b) $ \case
     Nothing  -> return "Error"
-    Just pdf -> liftJSM $ PDF.renderPage pdf 2 >> return "Good"
+    Just pdf -> liftJSM $ PDF.renderPage pdf 1 >> return "Good"
 
   display =<< holdDyn "Waiting for response" res
   return ()

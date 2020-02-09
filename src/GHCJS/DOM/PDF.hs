@@ -28,7 +28,6 @@ renderPage pdfBase64 pageNum = do
   let
     j1 = js1 @Text.Text
     log logArg = jsg @String "console" ^. j1 "log" logArg
-  -- log "renderPage"
   syncPoint
   pdfBytes <- jsg @String "window" ^. j1 "atob" pdfBase64
   docData  <- do
@@ -40,11 +39,10 @@ renderPage pdfBase64 pageNum = do
   p        <- getProp "promise" =<< valToObject document
   result   <- p ^. js1 @String "then"
                (fun $ \_ _ [pdf] -> do
-                   log ("pdf" :: String)
                    render <- pdf ^. j1 "getPage" pageNum
                    render ^. j1 "then" (fun $ \_ _ [page] -> do
                          let
-                           scale = 1.5 :: Double
+                           scale = 1.0 :: Double
                          viewportArg <- valMakeJSON
                                         (Aeson.object ["scale" Aeson..= scale])
                          viewport <- page ^. j1 "getViewport" viewportArg
