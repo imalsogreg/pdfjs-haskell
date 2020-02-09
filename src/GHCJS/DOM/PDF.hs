@@ -23,6 +23,25 @@ import           Language.Javascript.JSaddle
 import           Reflex.Dom.Core
 
 
+newtype PDF = PDF { pdfValue :: JSVal }
+
+nPages :: PDF -> JSM Int
+nPages (PDF jsPDF) = do
+
+  syncPoint
+  js1
+
+-- | Import a PDF from a "bare" base64-encoded bytestring
+--   This would normally start with "JVBERi0...", the base64
+--   encoding of the first bits in the PDF format
+fromBareBase64 :: Text -> JSM PDF
+fromBareBase64 pdfBytesBase64 = undefined
+
+-- | Import a PDF from a DataUrl encoded bytestring
+--   This would normally start with "data:application/pdf;base64,JVBERi..."
+fromDataUrlBase64 :: Text -> JSM PDF
+fromDataUrlBase64 pdfBytesBase64 = undefined
+
 renderPage :: Text.Text -> Int -> JSM ()
 renderPage pdfBase64 pageNum = do
   let
