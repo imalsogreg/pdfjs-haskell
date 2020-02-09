@@ -15,7 +15,6 @@ import           Data.Default                           (Default, def)
 import qualified Data.Text                              as Text
 
 import qualified Data.Text.Encoding                     as Text
-import qualified GHCJS.DOM.PDF                          as PDF
 import qualified GHCJS.DOM.FileReader as FileReader
 
 import qualified GHCJS.DOM.Types as DOM
@@ -28,6 +27,8 @@ import qualified Reflex.Dom.Main                        as ReflexMain
 #ifndef ghcjs_HOST_OS
 import           Language.Javascript.JSaddle.WebSockets (debug)
 #endif
+
+import qualified GHCJS.DOM.PDF                          as PDF
 
 app
   :: forall t m .
@@ -64,7 +65,8 @@ app = do
         liftJSM $ elementOnEventName Load readerElement $ do
           stringOrBuffer <-  FileReader.getResultUnchecked reader
           pdfData <- liftJSM $ JSaddle.ghcjsPure $ JSS.textFromJSVal $ DOM.pToJSVal stringOrBuffer
-          IO.liftIO $ tell (Just $ Text.drop 28 pdfData)
+          pdf <- liftJSM $ PDF.fromDataUrlBase64 pdfData
+          IO.liftIO $ tell (Just pdf)
         return ()
 
 
@@ -76,7 +78,7 @@ app = do
                              "style" =: "box-shadow:5px 5px 5px black;") (return ())
   res <- performEvent $ ffor (tagPromptlyDyn loadedFile b) $ \case
     Nothing  -> return "Error"
-    Just pdf -> liftJSM $ PDF.renderPage pdf 1 >> return "Good"
+    Just pdf -> liftJSM $ PDF.renderPage' pdf 1 "the-canvas" >> return "Good"
 
   display =<< holdDyn "Waiting for response" res
   return ()
