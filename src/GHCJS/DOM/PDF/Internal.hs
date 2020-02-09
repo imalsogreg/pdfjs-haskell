@@ -12,6 +12,7 @@ import qualified Control.Concurrent.STM.TMVar as TMVar
 import qualified Data.Aeson                  as Aeson
 import qualified Data.Text                   as Text
 import           Language.Javascript.JSaddle
+import qualified          Language.Javascript.JSaddle as JS
 
 newtype PDF = PDF { pdfValue :: JSVal }
 
@@ -40,13 +41,26 @@ getPDFFromBareBase64Bytestring pdfBase64 = do
   result <- IO.liftIO $ atomically (TMVar.readTMVar resultVar)
   return $ PDF result
 
+
+data PageDimensions = PageDimensions
+  { pageTop :: Int
+  , pageLeft :: Int
+  , pageWidth :: Int
+  , pageHeight :: Int
+  } deriving (Eq, Show)
+
+data RenderResult =
+  GoodRender PageDimensions
+  deriving (Show, Eq)
+
 renderPDFPage
   :: PDF
   -> Int
   -> String
   -> Double
-  -> JSM ()
+  -> JSM RenderResult
 renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
+  resultVar <- IO.liftIO TMVar.newEmptyTMVarIO
   render <- jsPDF ^. js1 ("getPage" :: String) pageNum
   render ^. js1 ("then" :: String)
     (fun $ \_ _ [page] -> do
@@ -61,6 +75,12 @@ renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
           setProp ("viewport")      viewport rc
           return rc
         page ^. js1 ("render" :: String) renderContext
-        return ()
+        pageView <- page ! ("view" :: String)
+        pageDimensions <- PageDimensions
+          <$> (fromJSValUnchecked =<< pageView JS.!! 0)
+          <*> (fromJSValUnchecked =<< pageView JS.!! 1)
+          <*> (fromJSValUnchecked =<< pageView JS.!! 2)
+          <*> (fromJSValUnchecked =<< pageView JS.!! 3)
+        IO.liftIO $ atomically $ TMVar.putTMVar resultVar $ GoodRender pageDimensions
     )
-  return ()
+  IO.liftIO $ atomically $ TMVar.readTMVar resultVar

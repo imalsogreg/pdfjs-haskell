@@ -51,9 +51,9 @@ fromDataUrlBase64 pdfBytesBase64 =
     bareBytes =
       Text.drop (Text.length PDF.dataUrlPrefix) pdfBytesBase64
 
-renderPage' :: PDF.PDF -> Int -> String -> JSM ()
-renderPage' pdf pageNum canvasName =
-  PDF.renderPDFPage pdf pageNum canvasName 1.0
+renderPage' :: PDF.PDF -> Int -> String -> Double -> JSM PDF.RenderResult
+renderPage' pdf pageNum canvasName scale =
+  PDF.renderPDFPage pdf pageNum canvasName scale
 
 renderPage :: Text.Text -> Int -> JSM ()
 renderPage pdfBase64 pageNum = do

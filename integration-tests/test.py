@@ -13,7 +13,7 @@ def imgBase64ToWebpage(base64):
 def browser_render_result(browser,pdfPath):
     render_btn = browser.find_element_by_id('render')
     file_btn   = browser.find_element_by_id('choose-file')
-    canvas     = browser.find_element_by_id('the-canvas')
+    canvas     = browser.find_element_by_id('the-canvas1')
     file_btn.send_keys(pdfPath)
     time.sleep(2)
     render_btn.click()
@@ -40,10 +40,11 @@ class Test(unittest.TestCase):
 
     def test_firefox_pdf_render(self):
         pdfPath = sys.argv[2]
-        expectedCanvasBytes = io.open('expected_canvas_bytes.txt').read()[:-1]
+        with io.open('expected_canvas_bytes.txt') as f:
+          expectedCanvasBytes = f.read()
         self.ff.get('http://localhost:8000')
         time.sleep(1)
-        self.assertEqual(browser_render_result(self.ff,pdfPath)[0:10000], expectedCanvasBytes[0:10000])
+        self.assertEqual(browser_render_result(self.ff,pdfPath), expectedCanvasBytes)
    
 
 if __name__ == '__main__':
