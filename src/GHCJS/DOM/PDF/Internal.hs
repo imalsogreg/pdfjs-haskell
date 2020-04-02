@@ -61,7 +61,7 @@ renderPDFPage
   -> Double
   -> JSM RenderResult
 renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
-  let log logArg = jsg @String "console" ^. j1 "log" logArg
+  let log logArg = jsg @String "console" ^. js1 ("log" :: String) logArg
   resultVar <- IO.liftIO TMVar.newEmptyTMVarIO
   render <- jsPDF ^. js1 ("getPage" :: String) pageNum
   render ^. js1 ("then" :: String)
@@ -73,8 +73,8 @@ renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
 
         height <- viewport ! ("height" :: String)
         width  <- viewport ! ("width"  :: String)
-        canvas ^. js2 ("setAttribute") ("height" :: String) height
-        canvas ^. js2 ("setAttribute") ("width"  :: String) width
+        canvas ^. js2 ("setAttribute" :: String) ("height" :: String) height
+        canvas ^. js2 ("setAttribute" :: String) ("width"  :: String) width
 
         context <- canvas ^. js1 ("getContext" :: String) ("2d" :: String)
         renderContext <- do
