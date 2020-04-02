@@ -49,8 +49,9 @@ data PageDimensions = PageDimensions
   , pageHeight :: Int
   } deriving (Eq, Show)
 
-data RenderResult =
-  GoodRender PageDimensions
+data RenderResult
+  = GoodRender PageDimensions
+  | NoCanvas
   deriving (Show, Eq)
 
 renderPDFPage
@@ -60,6 +61,7 @@ renderPDFPage
   -> Double
   -> JSM RenderResult
 renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
+  let log logArg = jsg @String "console" ^. j1 "log" logArg
   resultVar <- IO.liftIO TMVar.newEmptyTMVarIO
   render <- jsPDF ^. js1 ("getPage" :: String) pageNum
   render ^. js1 ("then" :: String)
@@ -68,6 +70,12 @@ renderPDFPage (PDF jsPDF) pageNum canvasName scale = do
                        (Aeson.object [Text.pack "scale" Aeson..= scale])
         viewport <- page ^. js1 ("getViewport" :: String) viewportArg
         canvas <- jsg @String "document" ^. js1 ("getElementById" :: String) canvasName
+
+        height <- viewport ! ("height" :: String)
+        width  <- viewport ! ("width"  :: String)
+        canvas ^. js2 ("setAttribute") ("height" :: String) height
+        canvas ^. js2 ("setAttribute") ("width"  :: String) width
+
         context <- canvas ^. js1 ("getContext" :: String) ("2d" :: String)
         renderContext <- do
           rc <- create
