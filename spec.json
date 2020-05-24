@@ -1,0 +1,17 @@
+{
+    "enabled": 1,
+    "hidden": false,
+    "description": "Jobsets",
+    "nixexprinput": "src",
+    "nixexprpath": "default.nix",
+    "checkinterval": 300,
+    "schedulingshares": 100,
+    "enableemail": false,
+    "emailoverride": "",
+    "keepnr": 3,
+    "inputs": {
+        "src": { "type": "git", "value": "git://github.com/imalsogreg/pdfjs-haskell.git", "emailresponsible": false },
+        "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs.git release-20.03", "emailresponsible": false },
+	"reflex-platform": { "type": "git", "value": "git://github.com/reflex-frp/reflex-platform.git develop", "emailresponsible": false }
+    }
+}
