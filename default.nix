@@ -1,6 +1,8 @@
-{build_demo ? false}:
+{ build_demo ? false,
+  reflex-platform ? import ./reflex-platform.nix
+}:
 
-(import ./reflex-platform.nix).project ({ pkgs, ... }: {
+reflex-platform.project ({ pkgs, ... }: {
   packages = {
     pdfjs = ./.;
   };
