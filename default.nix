@@ -1,9 +1,9 @@
 { build_demo ? false,
-  reflex-platform ? import ./reflex-platform.nix
+  reflex-platform ? import ./reflex-platform.nix {}
 }:
 
-(abort (builtins.concatStringsSep " " (builtins.attrNames reflex-platform))) ( {pkgs, ...}: {
-# reflex-platform.project ({ pkgs, ... }: {
+# (abort (builtins.concatStringsSep " " (builtins.attrNames reflex-platform))) ( {pkgs, ...}: {
+reflex-platform.project ({ pkgs, ... }: {
   packages = {
     pdfjs = ./.;
   };
