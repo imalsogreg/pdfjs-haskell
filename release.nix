@@ -1,5 +1,7 @@
 { nixpkgs, reflex-platform }:
 
+let pdfjs-package = import ./default.nix { inherit reflex-platform };
+in
 {
-  pdfjs-haskell = import ./default.nix { inherit reflex-platform; };
+  pdfjs = pdfjs-package.ghc.pdfjs;
 }

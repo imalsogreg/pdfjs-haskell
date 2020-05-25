@@ -6,6 +6,6 @@ let
   #   sha256 = "05vz3w6fh0gfhihnzgc7mvlyhgqg5cj4qmzq0f6frvi9drn4v460";
   # };
 in
-import import <reflex-platform> {
+import <reflex-platform> {
   nixpkgsFunc = import <nixpkgs>;
 }
