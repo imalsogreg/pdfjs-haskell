@@ -1,3 +1,3 @@
 import <reflex-platform> {
-  # nixpkgsFunc = import <nixpkgs>;
+  nixpkgsFunc = import <nixpkgs>;
 }

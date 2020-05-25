@@ -25,7 +25,7 @@ let
     inputs = jobs.inputs // {
       nixpkgs = {
         type = "git";
-        value = "https://github.com/NixOS/nixpkgs-channels nixos-unstable";
+        value = "https://github.com/NixOS/nixpkgs release-19.09";
         emailresponsible = false;
       };
       reflex-platform = {
