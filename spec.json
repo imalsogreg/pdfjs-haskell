@@ -13,6 +13,11 @@
     "inputs": {
         "src": { "type": "git", "value": "git@github.com:imalsogreg/pdfjs-haskell.git", "emailresponsible": false },
         "nixpkgs": { "type": "git", "value": "git@github.com:NixOS/nixpkgs.git release-19.09", "emailresponsible": false },
-        "reflex-platform": { "type": "git", "value": "git@github.com:reflex-frp/reflex-platform.git develop", "emailresponsible": false }
+        "reflex-platform": { "type": "git", "value": "git@github.com:reflex-frp/reflex-platform.git develop", "emailresponsible": false },
+        "prs": {
+            "type": "githubpulls",
+            "value": "imalsogreg pdfjs-haskell",
+            "emailresponsible": false
+        }
     }
 }
