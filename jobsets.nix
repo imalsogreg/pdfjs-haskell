@@ -28,6 +28,11 @@ let
         value = "https://github.com/NixOS/nixpkgs-channels nixos-unstable";
         emailresponsible = false;
       };
+      reflex-platform = {
+        type = "git";
+        value = "https://github.com/reflex-frp/reflex-platform develop";
+        emailresponsible = false;
+      };
     };
   };
   branchJobset = branch: defaults {
