@@ -5,5 +5,5 @@
 let pdfjs-package = import ./default.nix { };
 in
 {
-  pdfjs = pdfjs-package.ghc.pdfjs;
+  pdfjs = pdfjs-package.ghcjs.pdfjs;
 }
