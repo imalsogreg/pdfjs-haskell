@@ -2,7 +2,7 @@
 , reflex-platform ? import <reflex-platform> {}
 }:
 
-let pdfjs-package = import ./default.nix { inherit reflex-platform; };
+let pdfjs-package = import ./default.nix { };
 in
 {
   pdfjs = pdfjs-package.ghc.pdfjs;
