@@ -21,6 +21,7 @@ let
     emailoverride = "";
     nixexprinput = "pdfjs-haskell";
     nixexprpath = "release.nix";
+    type = 0;
     inputs = jobs.inputs // {
       nixpkgs = {
         type = "git";
