@@ -12,8 +12,8 @@
     "type": 0,
     "inputs": {
         "src": { "type": "git", "value": "git@github.com:imalsogreg/pdfjs-haskell.git", "emailresponsible": false },
-        "nixpkgs": { "type": "git", "value": "git@github.com:NixOS/nixpkgs.git release-19.09", "emailresponsible": false },
-        "reflex-platform": { "type": "git", "value": "git@github.com:reflex-frp/reflex-platform.git develop", "emailresponsible": false },
+        "nixpkgs": { "type": "git", "value": "git@github.com:WebGHC/nixpkgs.git a5cc7b77c090ede3ac380962ea876b83d847592c", "emailresponsible": false },
+        "reflex-platform": { "type": "git", "value": "git@github.com:reflex-frp/reflex-platform.git c21ec7036c8351185cd2feef9ce577b6a61c4f22", "emailresponsible": false },
         "prs": {
             "type": "githubpulls",
             "value": "imalsogreg pdfjs-haskell",

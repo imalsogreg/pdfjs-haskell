@@ -25,12 +25,12 @@ let
     inputs = jobs.inputs // {
       nixpkgs = {
         type = "git";
-        value = "https://github.com/NixOS/nixpkgs release-19.09";
+        value = "https://github.com/WebGHC/nixpkgs a5cc7b77c090ede3ac380962ea876b83d847592c";
         emailresponsible = false;
       };
       reflex-platform = {
         type = "git";
-        value = "https://github.com/reflex-frp/reflex-platform develop";
+        value = "https://github.com/reflex-frp/reflex-platform c21ec7036c8351185cd2feef9ce577b6a61c4f22";
         emailresponsible = false;
       };
     };
