@@ -1,18 +1,20 @@
 -- |
 
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeApplications  #-}
 
 module GHCJS.DOM.PDF.Internal where
 
-import qualified Control.Monad.IO.Class as IO
-import Control.Lens  ((^.))
-import Control.Concurrent.STM (atomically)
+import qualified Control.Concurrent           as Concurrent
+import           Control.Concurrent.STM       (atomically)
 import qualified Control.Concurrent.STM.TMVar as TMVar
-import qualified Data.Aeson                  as Aeson
-import qualified Data.Text                   as Text
+import           Control.Lens                 ((^.))
+import qualified Control.Monad                as Monad
+import qualified Control.Monad.IO.Class       as IO
+import qualified Data.Aeson                   as Aeson
+import qualified Data.Text                    as Text
 import           Language.Javascript.JSaddle
-import qualified          Language.Javascript.JSaddle as JS
+import qualified Language.Javascript.JSaddle  as JS
 
 newtype PDF = PDF { pdfValue :: JSVal }
 
@@ -31,6 +33,11 @@ getPDFFromBareBase64Bytestring pdfBase64 = do
     bytes <- toJSVal pdfBytes
     setProp "data" bytes obj
     return obj
+  IO.liftIO $ Concurrent.threadDelay 2000000
+  pdfjsLib <- jsg @String "pdfjsLib"
+  pdfjsLibUndefined <- JS.ghcjsPure $ JS.isUndefined pdfjsLib
+  Monad.when pdfjsLibUndefined
+    (error "pdfjs-haskell error: pdfjsLib is undefined")
   document <- jsg @String "pdfjsLib" ^. js1 @String "getDocument" docData
   p        <- getProp ("promise" :: JSString) =<< valToObject document
   resultVar <- IO.liftIO TMVar.newEmptyTMVarIO
@@ -43,9 +50,9 @@ getPDFFromBareBase64Bytestring pdfBase64 = do
 
 
 data PageDimensions = PageDimensions
-  { pageTop :: Int
-  , pageLeft :: Int
-  , pageWidth :: Int
+  { pageTop    :: Int
+  , pageLeft   :: Int
+  , pageWidth  :: Int
   , pageHeight :: Int
   } deriving (Eq, Show)
 
